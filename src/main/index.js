@@ -11,7 +11,7 @@ const INSTANCES_DIR = path.join(ROOT_DIR, 'instances');
 let mainWindow;
 
 function setupAutoUpdater() {
-  autoUpdater.autoDownload = true;
+  autoUpdater.autoDownload = false;
   autoUpdater.autoInstallOnAppQuit = true;
 
   autoUpdater.on('update-available', (info) => {
@@ -30,6 +30,10 @@ function setupAutoUpdater() {
     mainWindow?.webContents.send('updater:error', err.message);
   });
 }
+
+ipcMain.handle('updater:download', () => {
+  autoUpdater.downloadUpdate();
+});
 
 ipcMain.handle('updater:install', () => {
   autoUpdater.quitAndInstall();

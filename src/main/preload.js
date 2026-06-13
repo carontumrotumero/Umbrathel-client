@@ -25,6 +25,7 @@ contextBridge.exposeInMainWorld('aurora', {
     ipcRenderer.removeAllListeners('minecraft:progress');
     ipcRenderer.removeAllListeners('minecraft:close');
   },
+  updaterDownload:     () => ipcRenderer.invoke('updater:download'),
   updaterInstall:      () => ipcRenderer.invoke('updater:install'),
   onUpdaterAvailable:  (cb) => ipcRenderer.on('updater:available',  (_, v) => cb(v)),
   onUpdaterProgress:   (cb) => ipcRenderer.on('updater:progress',   (_, v) => cb(v)),
