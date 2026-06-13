@@ -78,7 +78,7 @@ function LaunchModal({ instance, onClose, onLaunch, accounts, activeAccountId, s
       minRam:     settings.minRam,
       javaPath:   settings.javaPath || undefined,
       jvmArgs:    settings.jvmArgs || '',
-      offline:    account?.offline ?? true,
+      offline:    account?.offline ?? false,
       username:   account?.name || 'UmbrathelPlayer',
       uuid:       account?.id,
       accessToken: account?.accessToken,
