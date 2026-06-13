@@ -48,7 +48,7 @@
         }
       ],
       "icon": "build/icon.icns",
-      "artifactName": "${productName}-${version}-mac-${arch}.${ext}"
+      "artifactName": "Umbrathel-Client-${version}-mac-${arch}.${ext}"
     },
     "win": {
       "target": [
@@ -59,7 +59,7 @@
           ]
         }
       ],
-      "artifactName": "${productName}-${version}-setup.${ext}"
+      "artifactName": "Umbrathel-Client-${version}-setup.${ext}"
     },
     "nsis": {
       "oneClick": false,
@@ -84,7 +84,7 @@
         }
       ],
       "category": "Game",
-      "artifactName": "${productName}-${version}-linux-${arch}.${ext}"
+      "artifactName": "Umbrathel-Client-${version}-linux-${arch}.${ext}"
     },
     "deb": {
       "depends": [
