@@ -1,0 +1,134 @@
+{
+  "name": "umbrathel-client",
+  "version": "1.0.3",
+  "description": "Cliente oficial de Minecraft del Reino de Umbrathel",
+  "main": "src/main/index.js",
+  "scripts": {
+    "dev": "concurrently -k \"npm run dev:renderer\" \"wait-on http://localhost:5173 && npm run dev:electron\"",
+    "dev:renderer": "vite src/renderer",
+    "dev:electron": "electron . --dev",
+    "build": "vite build src/renderer && electron-builder",
+    "build:renderer": "vite build src/renderer",
+    "pack": "electron-builder --dir"
+  },
+  "build": {
+    "appId": "com.umbrathel.client",
+    "productName": "Umbrathel Client",
+    "copyright": "© Reino de Umbrathel — Todos los derechos reservados",
+    "icon": "build/icon.icns",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "src/main/**/*",
+      "src/renderer/dist/**/*",
+      "resources/**/*",
+      "node_modules/**/*",
+      "package.json"
+    ],
+    "extraResources": [
+      {
+        "from": "resources/mods",
+        "to": "mods",
+        "filter": [
+          "**/*.jar"
+        ]
+      }
+    ],
+    "asar": true,
+    "mac": {
+      "category": "public.app-category.games",
+      "target": [
+        {
+          "target": "dmg",
+          "arch": [
+            "arm64",
+            "x64"
+          ]
+        }
+      ],
+      "icon": "build/icon.icns",
+      "artifactName": "${productName}-${version}-mac-${arch}.${ext}"
+    },
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "artifactName": "${productName}-${version}-setup.${ext}"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Umbrathel Client"
+    },
+    "linux": {
+      "target": [
+        {
+          "target": "deb",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "AppImage",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "category": "Game",
+      "artifactName": "${productName}-${version}-linux-${arch}.${ext}"
+    },
+    "deb": {
+      "depends": [
+        "default-jre | java17-runtime",
+        "libgtk-3-0",
+        "libnss3"
+      ],
+      "maintainer": "Reino de Umbrathel <admin@umbrathel.com>"
+    },
+    "publish": {
+      "provider": "github",
+      "owner": "carontumrotumero",
+      "repo": "Umbrathel-client"
+    }
+  },
+  "keywords": [],
+  "author": {
+    "name": "Reino de Umbrathel",
+    "email": "admin@umbrathel.com"
+  },
+  "homepage": "https://umbrathel.com",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "@vitejs/plugin-react": "^6.0.2",
+    "concurrently": "^10.0.3",
+    "electron": "^42.4.0",
+    "electron-builder": "^26.15.2",
+    "vite": "^8.0.16",
+    "wait-on": "^9.0.10"
+  },
+  "dependencies": {
+    "@xmcl/core": "^2.15.1",
+    "@xmcl/installer": "^6.1.2",
+    "axios": "^1.17.0",
+    "electron-updater": "^6.8.9",
+    "framer-motion": "^12.40.0",
+    "lucide-react": "^1.17.0",
+    "minecraft-launcher-core": "^3.18.2",
+    "msmc": "^5.0.5",
+    "node-fetch": "^2.7.0",
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7",
+    "react-router-dom": "^7.17.0",
+    "zustand": "^5.0.14"
+  }
+}

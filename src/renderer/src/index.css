@@ -1,0 +1,110 @@
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:           #0b0b18;
+  --bg2:          #111127;
+  --card:         #14142c;
+  --card-hover:   #1c1c38;
+  --border:       rgba(120, 90, 255, 0.16);
+  --border2:      rgba(120, 90, 255, 0.08);
+  --accent:       #7c5cfc;
+  --accent2:      #5b3fd4;
+  --accent-glow:  rgba(124, 92, 252, 0.4);
+  --accent-light: #a78bfa;
+  --success:      #22c55e;
+  --warning:      #f59e0b;
+  --danger:       #ef4444;
+  --info:         #06b6d4;
+  --text:         #ede9ff;
+  --text2:        #9b96cc;
+  --text3:        #5e5a8a;
+  --radius:       14px;
+  --radius-sm:    9px;
+  --shadow:       0 8px 32px rgba(0,0,0,0.5);
+}
+
+html, body, #root { height: 100%; overflow: hidden; background: var(--bg); color: var(--text);
+  font-family: 'Inter', system-ui, sans-serif; font-size: 14px; -webkit-font-smoothing: antialiased;
+  user-select: none; }
+
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+
+.drag    { -webkit-app-region: drag; }
+.no-drag { -webkit-app-region: no-drag; }
+
+/* ── Botones ── */
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 7px;
+  padding: 9px 18px; border-radius: var(--radius-sm); font-size: 13px; font-weight: 600;
+  cursor: pointer; border: none; outline: none; transition: all 0.18s ease; }
+.btn:disabled { opacity: 0.45; cursor: not-allowed !important; transform: none !important; }
+
+.btn-primary { background: linear-gradient(135deg, var(--accent), var(--accent2)); color: #fff;
+  box-shadow: 0 4px 20px var(--accent-glow); }
+.btn-primary:not(:disabled):hover { transform: translateY(-1px); box-shadow: 0 6px 28px var(--accent-glow); }
+.btn-primary:not(:disabled):active { transform: translateY(0); }
+
+.btn-ghost { background: transparent; color: var(--text2); border: 1px solid var(--border); }
+.btn-ghost:not(:disabled):hover { background: var(--card-hover); color: var(--text); border-color: rgba(120,90,255,0.3); }
+
+.btn-danger { background: rgba(239,68,68,0.12); color: var(--danger); border: 1px solid rgba(239,68,68,0.25); }
+.btn-danger:not(:disabled):hover { background: rgba(239,68,68,0.22); }
+
+.btn-success { background: rgba(34,197,94,0.12); color: var(--success); border: 1px solid rgba(34,197,94,0.25); }
+.btn-success:not(:disabled):hover { background: rgba(34,197,94,0.22); }
+
+/* ── Inputs ── */
+input, select, textarea {
+  background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-sm);
+  color: var(--text); padding: 9px 13px; font-size: 13px; font-family: inherit;
+  outline: none; transition: border-color 0.18s; width: 100%; }
+input:focus, select:focus, textarea:focus { border-color: var(--accent); }
+select option { background: var(--card); }
+label { font-size: 12px; color: var(--text2); font-weight: 500; display: block; margin-bottom: 5px; }
+
+/* ── Cards ── */
+.card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); }
+.card:hover { border-color: rgba(120,90,255,0.28); }
+
+/* ── Glass ── */
+.glass { background: rgba(20,20,44,0.7); backdrop-filter: blur(20px); border: 1px solid var(--border); }
+
+/* ── Badges ── */
+.badge { display: inline-flex; align-items: center; gap: 4px;
+  padding: 2px 9px; border-radius: 999px; font-size: 11px; font-weight: 600; }
+.badge-purple { background: rgba(124,92,252,0.15); color: var(--accent-light); }
+.badge-green  { background: rgba(34,197,94,0.15);  color: var(--success); }
+.badge-yellow { background: rgba(245,158,11,0.15); color: var(--warning); }
+.badge-red    { background: rgba(239,68,68,0.15);  color: var(--danger); }
+.badge-cyan   { background: rgba(6,182,212,0.15);  color: var(--info); }
+
+/* ── Progress bar ── */
+.progress-bar { width: 100%; height: 5px; background: var(--bg2); border-radius: 3px; overflow: hidden; }
+.progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--accent-light));
+  border-radius: 3px; transition: width 0.3s ease; }
+
+/* ── Animaciones ── */
+@keyframes fadeIn  { from { opacity: 0; } to { opacity: 1; } }
+@keyframes slideUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes pulse   { 0%,100% { opacity: 1; } 50% { opacity: 0.5; } }
+@keyframes spin    { to { transform: rotate(360deg); } }
+@keyframes glow    { 0%,100% { box-shadow: 0 0 10px var(--accent-glow); } 50% { box-shadow: 0 0 25px var(--accent-glow); } }
+
+.fade-in  { animation: fadeIn  0.2s ease; }
+.slide-up { animation: slideUp 0.25s ease; }
+.spin     { animation: spin 1s linear infinite; }
+.pulse    { animation: pulse 2s ease-in-out infinite; }
+
+/* ── Modal overlay ── */
+.modal-overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.65);
+  backdrop-filter: blur(6px); z-index: 100;
+  display: flex; align-items: center; justify-content: center; }
+.modal { background: var(--card); border: 1px solid var(--border); border-radius: 18px;
+  padding: 28px; min-width: 480px; max-width: 560px; box-shadow: var(--shadow); animation: slideUp 0.2s ease; }
+.modal-title { font-size: 18px; font-weight: 800; margin-bottom: 20px; }
+
+/* ── Scrollable área ── */
+.scroll { overflow-y: auto; }
