@@ -1,6 +1,7 @@
 import React from 'react';
-import { Zap, Minus, Square, X } from 'lucide-react';
+import { Minus, Square, X } from 'lucide-react';
 import { useLauncher } from '../store/launcher';
+import logo from '../assets/logo.png';
 
 const BTN = ({ icon, onClick, danger }) => (
   <button className="no-drag" onClick={onClick} style={{
@@ -23,7 +24,7 @@ export default function TitleBar() {
       padding: '0 14px', flexShrink: 0, zIndex: 50,
     }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-        <Zap size={15} color="var(--accent)" fill="var(--accent)" />
+        <img src={logo} style={{ width: 20, height: 20, objectFit: 'contain' }} alt="" />
         <span style={{ fontWeight: 800, fontSize: 13, letterSpacing: '0.06em', color: 'var(--accent-light)' }}>
           UMBRATHEL CLIENT
         </span>
