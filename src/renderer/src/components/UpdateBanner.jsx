@@ -11,8 +11,8 @@ export default function UpdateBanner() {
     window.aurora?.onUpdaterAvailable((v)  => { setState('ask'); setInfo(v); });
     window.aurora?.onUpdaterProgress((p)   => { setState('downloading'); setProgress(Math.round(p.percent)); });
     window.aurora?.onUpdaterDownloaded((v) => { setState('ready'); setInfo(v); });
-    window.aurora?.onUpdaterError(()       => setState('error'));
-  }, []);
+    window.aurora?.onUpdaterError(()       => { if (!info?.macOnly) setState('error'); });
+  }, [info]);
 
   if (!state || dismissed) return null;
 
@@ -63,9 +63,18 @@ export default function UpdateBanner() {
             style={{ flex: 1, fontSize: 12, padding: '7px 0' }}>
             Ahora no
           </button>
-          <button className="btn btn-primary" onClick={() => { setState('downloading'); window.aurora?.updaterDownload(); }}
+          <button className="btn btn-primary"
+            onClick={() => {
+              if (info?.macOnly) {
+                window.aurora?.updaterDownload(); // abre GitHub en browser
+                setDismiss(true);
+              } else {
+                setState('downloading');
+                window.aurora?.updaterDownload();
+              }
+            }}
             style={{ flex: 1, fontSize: 12, padding: '7px 0' }}>
-            <Download size={12} /> Actualizar
+            <Download size={12} /> {info?.macOnly ? 'Descargar' : 'Actualizar'}
           </button>
         </div>
       )}

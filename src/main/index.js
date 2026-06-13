@@ -15,7 +15,7 @@ function setupAutoUpdater() {
   autoUpdater.autoInstallOnAppQuit = true;
 
   autoUpdater.on('update-available', (info) => {
-    mainWindow?.webContents.send('updater:available', info);
+    mainWindow?.webContents.send('updater:available', { ...info, macOnly: process.platform === 'darwin' });
   });
 
   autoUpdater.on('download-progress', (progress) => {
@@ -26,13 +26,20 @@ function setupAutoUpdater() {
     mainWindow?.webContents.send('updater:downloaded', info);
   });
 
-  autoUpdater.on('error', (err) => {
-    mainWindow?.webContents.send('updater:error', err.message);
+  autoUpdater.on('error', () => {
+    // En Mac, el error de firma es esperado — no mostrar error, el banner ya tiene el enlace
+    if (process.platform !== 'darwin') {
+      mainWindow?.webContents.send('updater:error', 'No se pudo descargar la actualización.');
+    }
   });
 }
 
 ipcMain.handle('updater:download', () => {
-  autoUpdater.downloadUpdate();
+  if (process.platform === 'darwin') {
+    shell.openExternal('https://github.com/carontumrotumero/Umbrathel-client/releases/latest');
+  } else {
+    autoUpdater.downloadUpdate();
+  }
 });
 
 ipcMain.handle('updater:install', () => {
