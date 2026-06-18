@@ -157,9 +157,9 @@ ipcMain.handle('mods:installAvedore', async (event, instanceId) => {
   for (const j of jars) {
     const d = path.join(dest, j);
     if (!fs.existsSync(d)) { fs.copyFileSync(path.join(src, j), d); nuevos++; }
-    event.sender.send('minecraft:log', `✓ ${j}`);
+    try { if (!event.sender.isDestroyed()) event.sender.send('minecraft:log', `✓ ${j}`); } catch {}
   }
-  event.sender.send('minecraft:log', `\n✓ ${jars.length} mods listos (${nuevos} nuevos)`);
+  try { if (!event.sender.isDestroyed()) event.sender.send('minecraft:log', `\n✓ ${jars.length} mods listos (${nuevos} nuevos)`); } catch {}
   return { success: true, total: jars.length, nuevos };
 });
 
@@ -241,7 +241,7 @@ async function resolveJava(preferredPath, mcVersion, log) {
 
 ipcMain.handle('forge:install', async (event, { mcVersion, javaPath, instanceId }) => {
   const { installForge, isForgeInstalled, getForgeVersionId } = require('./forge');
-  const log = msg => event.sender.send('minecraft:log', msg);
+  const log = msg => { try { if (!event.sender.isDestroyed()) event.sender.send('minecraft:log', msg); } catch {} };
   const root = instanceId ? path.join(INSTANCES_DIR, instanceId) : ROOT_DIR;
   if (isForgeInstalled(root, mcVersion)) {
     const vId = getForgeVersionId(mcVersion);
@@ -268,7 +268,8 @@ ipcMain.handle('forge:isInstalled', (_, { mcVersion, instanceId }) => {
 ipcMain.handle('minecraft:launch', async (event, config) => {
   const { Client, Authenticator } = require('minecraft-launcher-core');
   const { getForgeVersionId } = require('./forge');
-  const log = msg => event.sender.send('minecraft:log', String(msg));
+  const safeSend = (ch, val) => { try { if (!event.sender.isDestroyed()) event.sender.send(ch, val); } catch {} };
+  const log = msg => safeSend('minecraft:log', String(msg));
   const launcher = new Client();
   const instanceRoot = config.instanceId ? path.join(INSTANCES_DIR, config.instanceId) : ROOT_DIR;
 
@@ -408,9 +409,9 @@ ipcMain.handle('minecraft:launch', async (event, config) => {
 
   launcher.on('debug',    log);
   launcher.on('data',     log);
-  launcher.on('progress', p => event.sender.send('minecraft:progress', p));
+  launcher.on('progress', p => safeSend('minecraft:progress', p));
   launcher.on('close',    c => {
-    event.sender.send('minecraft:close', c);
+    safeSend('minecraft:close', c);
     // Actualizar lastPlayed
     if (config.instanceId) {
       const cfgPath = path.join(INSTANCES_DIR, config.instanceId, 'instance.json');
