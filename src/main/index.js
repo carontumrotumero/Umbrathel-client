@@ -10,11 +10,14 @@ const INSTANCES_DIR = path.join(ROOT_DIR, 'instances');
 
 let mainWindow;
 
+let latestVersion = null;
+
 function setupAutoUpdater() {
   autoUpdater.autoDownload = false;
   autoUpdater.autoInstallOnAppQuit = true;
 
   autoUpdater.on('update-available', (info) => {
+    latestVersion = info.version;
     mainWindow?.webContents.send('updater:available', { ...info, macOnly: process.platform === 'darwin' });
   });
 
@@ -36,7 +39,12 @@ function setupAutoUpdater() {
 
 ipcMain.handle('updater:download', () => {
   if (process.platform === 'darwin') {
-    shell.openExternal('https://github.com/carontumrotumero/Umbrathel-client/releases/latest');
+    const arch = process.arch === 'arm64' ? 'arm64' : 'x64';
+    const v = latestVersion || 'latest';
+    const url = v === 'latest'
+      ? 'https://github.com/carontumrotumero/Umbrathel-client/releases/latest'
+      : `https://github.com/carontumrotumero/Umbrathel-client/releases/download/v${v}/Umbrathel-Client-${v}-mac-${arch}.dmg`;
+    shell.openExternal(url);
   } else {
     autoUpdater.downloadUpdate();
   }
