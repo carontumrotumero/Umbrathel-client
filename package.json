@@ -1,6 +1,6 @@
 {
   "name": "umbrathel-client",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "description": "Cliente oficial de Minecraft del Reino de Umbrathel",
   "main": "src/main/index.js",
   "scripts": {
@@ -36,6 +36,7 @@
       }
     ],
     "asar": true,
+    "afterPack": "./afterPack.js",
     "mac": {
       "category": "public.app-category.games",
       "target": [
@@ -55,7 +56,10 @@
         }
       ],
       "icon": "build/icon.icns",
-      "artifactName": "Umbrathel-Client-${version}-mac-${arch}.${ext}"
+      "artifactName": "Umbrathel-Client-${version}-mac-${arch}.${ext}",
+      "identity": null,
+      "hardenedRuntime": false,
+      "gatekeeperAssess": false
     },
     "win": {
       "target": [
